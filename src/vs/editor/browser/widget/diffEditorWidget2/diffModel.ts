@@ -172,7 +172,7 @@ export class DiffModel extends Disposable {
 }
 
 export class UnchangedRegion {
-	public static fromDiffs(changes: LineRangeMapping[], originalLineCount: number, modifiedLineCount: number): UnchangedRegion[] {
+	public static fromDiffs(changes: readonly LineRangeMapping[], originalLineCount: number, modifiedLineCount: number): UnchangedRegion[] {
 		const inversedMappings = LineRangeMapping.inverse(changes, originalLineCount, modifiedLineCount);
 		const result: UnchangedRegion[] = [];
 
@@ -301,6 +301,7 @@ function applyOriginalEdits(diff: IDocumentDiff, textEdits: TextEditInfo[], orig
 		identical: false,
 		quitEarly: false,
 		changes,
+		moves: [],
 	};
 }
 
@@ -340,5 +341,6 @@ function applyModifiedEdits(diff: IDocumentDiff, textEdits: TextEditInfo[], orig
 		identical: false,
 		quitEarly: false,
 		changes,
+		moves: [],
 	};
 }

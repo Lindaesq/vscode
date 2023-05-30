@@ -153,7 +153,7 @@ interface IRangeAlignment {
 function computeRangeAlignment(
 	originalEditor: CodeEditorWidget,
 	modifiedEditor: CodeEditorWidget,
-	diffs: LineRangeMapping[],
+	diffs: readonly LineRangeMapping[],
 	originalEditorAlignmentViewZones: ReadonlySet<string>,
 	modifiedEditorAlignmentViewZones: ReadonlySet<string>,
 ): IRangeAlignment[] {

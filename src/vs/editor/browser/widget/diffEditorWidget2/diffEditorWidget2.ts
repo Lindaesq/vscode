@@ -202,7 +202,7 @@ export class DiffEditorWidget2 extends DelegatingEditor implements IDiffEditor {
 	}
 
 	private _createLeftHandSideEditor(options: Readonly<IDiffEditorConstructionOptions>, codeEditorWidgetOptions: ICodeEditorWidgetOptions): CodeEditorWidget {
-		const editor = this._createInnerEditor(this._instantiationService, this.elements.original, this._adjustOptionsForLeftHandSide(options), codeEditorWidgetOptions);
+		const editor = this._constructInnerEditor(this._instantiationService, this.elements.original, this._adjustOptionsForLeftHandSide(options), codeEditorWidgetOptions);
 		const isInDiffLeftEditorKey = this._contextKeyService.createKey<boolean>('isInDiffLeftEditor', editor.hasWidgetFocus());
 		this._register(editor.onDidFocusEditorWidget(() => isInDiffLeftEditorKey.set(true)));
 		this._register(editor.onDidBlurEditorWidget(() => isInDiffLeftEditorKey.set(false)));
@@ -210,7 +210,7 @@ export class DiffEditorWidget2 extends DelegatingEditor implements IDiffEditor {
 	}
 
 	private _createRightHandSideEditor(options: Readonly<IDiffEditorConstructionOptions>, codeEditorWidgetOptions: ICodeEditorWidgetOptions): CodeEditorWidget {
-		const editor = this._createInnerEditor(this._instantiationService, this.elements.modified, this._adjustOptionsForRightHandSide(options), codeEditorWidgetOptions);
+		const editor = this._constructInnerEditor(this._instantiationService, this.elements.modified, this._adjustOptionsForRightHandSide(options), codeEditorWidgetOptions);
 		const isInDiffRightEditorKey = this._contextKeyService.createKey<boolean>('isInDiffRightEditor', editor.hasWidgetFocus());
 		this._register(editor.onDidFocusEditorWidget(() => isInDiffRightEditorKey.set(true)));
 		this._register(editor.onDidBlurEditorWidget(() => isInDiffRightEditorKey.set(false)));
@@ -240,6 +240,11 @@ export class DiffEditorWidget2 extends DelegatingEditor implements IDiffEditor {
 
 	protected _createInnerEditor(instantiationService: IInstantiationService, container: HTMLElement, options: Readonly<IEditorConstructionOptions>, editorWidgetOptions: ICodeEditorWidgetOptions): CodeEditorWidget {
 		const editor = instantiationService.createInstance(CodeEditorWidget, container, options, editorWidgetOptions);
+		return editor;
+	}
+
+	protected _constructInnerEditor(instantiationService: IInstantiationService, container: HTMLElement, options: Readonly<IEditorConstructionOptions>, editorWidgetOptions: ICodeEditorWidgetOptions): CodeEditorWidget {
+		const editor = this._createInnerEditor(instantiationService, container, options, editorWidgetOptions);
 
 		this._register(editor.onDidContentSizeChange(e => {
 			const width = this._originalEditor.getContentWidth() + this._modifiedEditor.getContentWidth() + OverviewRulerPart.ENTIRE_DIFF_OVERVIEW_WIDTH;
